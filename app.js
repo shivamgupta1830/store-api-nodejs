@@ -1,12 +1,28 @@
 const express = require("express");
 const app = express();
+const connectDB = require("./db/connectDB");
+const productsRouter = require("./routes/products");
+require("dotenv").config();
 
-app.get("/", (req, res) => {
-  res.send("welcome to nodejs");
-});
+app.use(express.json());
 
-const port = 3000;
+//routes
 
-app.listen(port, () => {
-  console.log("server is running");
-});
+app.use("/api/v1/products", productsRouter);
+
+//Connect DB
+
+const port = process.env.PORT || 3000;
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    app.listen(port, () => {
+      console.log(`server is running on port ${port}...`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+start();
