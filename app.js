@@ -3,12 +3,14 @@ const app = express();
 const connectDB = require("./db/connectDB");
 const productsRouter = require("./routes/products");
 require("dotenv").config();
+const notFound = require("./middleware/not-found");
 
 app.use(express.json());
 
 //routes
 
 app.use("/api/v1/products", productsRouter);
+app.use(notFound);
 
 //Connect DB
 
